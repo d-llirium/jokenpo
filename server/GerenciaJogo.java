@@ -25,6 +25,8 @@ public class GerenciaJogo extends Thread {
                 System.out.println("A > " + msgA);
             } while(!msgA.equalsIgnoreCase("exit"));
 
+            System.out.println("GJ > Encerrada a conexão com " + clienteA.getInetAddress().getHostAddress());
+
             inputA.close();
             clienteA.close();
         } catch (Exception e) {

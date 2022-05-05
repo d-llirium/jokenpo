@@ -17,16 +17,16 @@ public class Server {
         try { // tratar excessão
             serverSocket = new ServerSocket(PORT); 
         } catch (Exception e) {
-            System.out.println("porta " + PORT + " já está em uso.");
+            System.out.println("S > porta " + PORT + " já está em uso.");
             return; // para o código
         }
 
         // aguardar pedido de conexão (listen)
         try {
             while( true ) {
-                System.out.println("Aguardando pedido de conexão...");
+                System.out.println("S > Aguardando pedido de conexão...");
                 clientSocket = serverSocket.accept(); // para e fica esperando a conexão... RETORNA o client socket qnd volta
-                System.out.println("Conectado com " + clientSocket.getInetAddress().getHostAddress());
+                System.out.println("S > Conectado com " + clientSocket.getInetAddress().getHostAddress());
                 GerenciaJogo gerenciaJogo = new GerenciaJogo( clientSocket );
                 gerenciaJogo.start(); // cCOMUNICAÇÃO FEITA AQUI troca de dados
             }
@@ -36,14 +36,14 @@ public class Server {
             // ** AGUARDAR O SEGUNDO SOCKET AQUI *****
 
         } catch (Exception e) {
-            System.out.println("Erro na conexão...");
+            System.out.println("xxxxxxx Erro na conexão... xxxxxxx");
             System.out.println(e.getMessage());
         }
 
-        // fase de encerramento da conexão
+        // fase de encerramento da conexão === o servidor fica conectado
         try {
             serverSocket.close();
-            System.out.println("Acabou a conexão do SERVIDOR");
+            System.out.println("========== Acabou a conexão do SERVIDOR ===============");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
