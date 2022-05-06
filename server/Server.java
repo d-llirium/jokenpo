@@ -42,12 +42,13 @@ public class Server {
                     if (clientSocketB == null) {
                         clientSocketB = clientSocketA;
                         clientNameB = clientNameA;
+                        
                         // ** AGUARDAR O SEGUNDO SOCKET AQUI *****
                         System.out.println("S > Aguardando um próximo jogador ... ");
                     } else {
                         ManageGame manageGame = new ManageGame( clientSocketA, clientNameA, clientSocketB, clientNameB );
                         manageGame.start(); // COMUNICAÇÃO FEITA AQUI troca de dados
-                        System.out.println("foi p jogo de 2");
+                        System.out.println("S >>>>>>>>>>>>> foi p jogo de 2");
 
                         clientSocketB = null;
                         clientNameB = null;
@@ -55,19 +56,18 @@ public class Server {
                 } else {
                     ManageGame manageGame = new ManageGame( clientSocketA, clientNameA );
                     manageGame.start(); // COMUNICAÇÃO FEITA AQUI troca de dados
-                    System.out.println("foi p jogo de 1");
+                    System.out.println("S >>>>>>>>>>>>> foi p jogo de 1");
                 }
             }
-
         } catch (Exception e) {
-            System.out.println("xxxxxxx Erro na conexão... xxxxxxx");
+            System.out.println("S > xxxxxxx Erro na conexão... xxxxxxx");
             System.out.println(e.getMessage());
         }
 
-        // fase de encerramento da conexão === o servidor fica conectado
+        // fase de encerramento da conexão === o servidor fica conectado FOREVIZ
         try {
             serverSocket.close();
-            System.out.println("========== Acabou a conexão do SERVIDOR ===============");
+            System.out.println("S > ========== Acabou a conexão do SERVIDOR ===============");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
