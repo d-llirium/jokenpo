@@ -52,7 +52,7 @@ public class Client {
  
             teclado = new Scanner(System.in); //permite que seja escrita meg no teclado para o servidor 
             String msg; // recebe a msg do teclado 
-
+// >>>> ADD aqui alguma coisa para dizer que a jogada iniciou
             do { 
                 System.out.println("Digite...: "); 
                 msg = teclado.nextLine(); 
