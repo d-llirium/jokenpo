@@ -10,7 +10,6 @@ public class Client {
         final int PORT = 12345; // precisa ser o mesmo número da porta do servidor
         Socket socket;
         PrintStream output = null;
-        // Scanner input = null; // pra receber quem ganha as partidas ???
         Scanner keyboard = null; 
         String clientName;
         int gameType;
@@ -44,23 +43,32 @@ public class Client {
 
         // fase de comunicação , troca de dados
         try {
-            // ** INPUT PARA LER MSG DO SERVIDOR **
-            // input = new Scanner(socket.getInputStream()); // para ler a mensagem do servidor
- 
             keyboard = new Scanner(System.in); //permite que seja escrita meg no teclado para o servidor 
-            String msg; // recebe a msg do teclado 
-// >>>> ADD aqui alguma coisa para dizer que a jogada iniciou
-            do { 
-                System.out.println("C > Digite...: "); 
-                msg = keyboard.nextLine(); 
-                output.println(msg); 
-            } while (!msg.equalsIgnoreCase("exit")); 
+            // output já foi iniciado
+
+            Listening listening = new Listening(socket);
+            listening.start();
+
+            String msg = ""; // recebe a msg do teclado 
+            do {
+                if (listening.getInput() == "Go!") {
+                    System.out.println("C > digite" +
+                        "\n1 .para pedra" +
+                        "\n2 .para papel" +
+                        "\n3 .para tesoura"
+                    ); 
+                    msg = keyboard.nextLine(); 
+                    output.println(msg); 
+                }
+                
+            
+            } while (!msg.equalsIgnoreCase("exit") && !msg.equalsIgnoreCase("exit")); 
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        // fase de encerramento da conexão
+        // fase de encerramento da conexão 
         try {
             output.close();
             socket.close();

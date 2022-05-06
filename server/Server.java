@@ -46,7 +46,7 @@ public class Server {
                         // ** AGUARDAR O SEGUNDO SOCKET AQUI *****
                         System.out.println("S > Aguardando um próximo jogador ... ");
                     } else {
-                        ManageGame manageGame = new ManageGame( clientSocketA, clientNameA, clientSocketB, clientNameB );
+                        GameManager manageGame = new GameManager( clientSocketA, clientNameA, clientSocketB, clientNameB );
                         manageGame.start(); // COMUNICAÇÃO FEITA AQUI troca de dados
                         System.out.println("S >>>>>>>>>>>>> foi p jogo de 2");
 
@@ -54,7 +54,7 @@ public class Server {
                         clientNameB = null;
                     }
                 } else {
-                    ManageGame manageGame = new ManageGame( clientSocketA, clientNameA );
+                    GameManager manageGame = new GameManager( clientSocketA, clientNameA );
                     manageGame.start(); // COMUNICAÇÃO FEITA AQUI troca de dados
                     System.out.println("S >>>>>>>>>>>>> foi p jogo de 1");
                 }
