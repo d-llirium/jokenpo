@@ -20,13 +20,13 @@ public class Client {
 
             // PSEUDO FASE DE TROCA DE DADOS SOMENTE PARA PEGAR NOME E TIPO DE JOGO
             try {
-                output = new PrintStream(socket.getOutputStream()); // msg enviada
-                keyboard = new Scanner(System.in); // permite que seja escrita msg no teclado para o servidor 
-    
+                output = new PrintStream(socket.getOutputStream()); 
+                keyboard = new Scanner(System.in); 
+
                 System.out.println("C > Digite o seu nome: ");
                 clientName = keyboard.nextLine(); 
                 output.println(clientName); 
-
+                
                 System.out.println("C > Digite \n0 para jogar contra a máquina \n1 para jogar com outro jogador: ");
                 gameType = keyboard.nextInt(); 
                 output.println(gameType); 
@@ -51,18 +51,9 @@ public class Client {
 
             String msg = ""; // recebe a msg do teclado 
             do {
-                if (listening.getInput() == "Go!") {
-                    System.out.println("C > digite" +
-                        "\n1 .para pedra" +
-                        "\n2 .para papel" +
-                        "\n3 .para tesoura"
-                    ); 
-                    msg = keyboard.nextLine(); 
-                    output.println(msg); 
-                }
-                
-            
-            } while (!msg.equalsIgnoreCase("exit") && !msg.equalsIgnoreCase("exit")); 
+                msg = keyboard.nextLine(); 
+                output.println(msg); 
+            } while (!listening.getInput().contains("GAME OVER")); 
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -71,7 +62,6 @@ public class Client {
         // fase de encerramento da conexão 
         try {
             output.close();
-            socket.close();
             keyboard.close();
             System.out.println("C > Acabou a conexão do CLIENTE");
         } catch (Exception e) {

@@ -28,11 +28,10 @@ public class Server {
         try {
             while( true ) {
                 System.out.println("S > Aguardando pedido de conexão...");
-                clientSocketA = serverSocket.accept(); // para e fica esperando a conexão... RETORNA o client socket qnd volta
+                clientSocketA = serverSocket.accept(); 
                 System.out.println("S > Conectado com " + clientSocketA.getInetAddress().getHostAddress());
                 
                 input = new Scanner(clientSocketA.getInputStream()); // ler a mensagem do cliente A
-
                 clientNameA = input.nextLine(); // recebe a mensagem do cliente
                 System.out.println("S > Jogador 1 = " + clientNameA);
                 
@@ -46,16 +45,16 @@ public class Server {
                         // ** AGUARDAR O SEGUNDO SOCKET AQUI *****
                         System.out.println("S > Aguardando um próximo jogador ... ");
                     } else {
-                        GameManager manageGame = new GameManager( clientSocketA, clientNameA, clientSocketB, clientNameB );
-                        manageGame.start(); // COMUNICAÇÃO FEITA AQUI troca de dados
+                        GameManager gameManager = new GameManager( clientSocketA, clientNameA, clientSocketB, clientNameB );
+                        gameManager.start(); // COMUNICAÇÃO FEITA AQUI troca de dados
                         System.out.println("S >>>>>>>>>>>>> foi p jogo de 2");
 
                         clientSocketB = null;
                         clientNameB = null;
                     }
                 } else {
-                    GameManager manageGame = new GameManager( clientSocketA, clientNameA );
-                    manageGame.start(); // COMUNICAÇÃO FEITA AQUI troca de dados
+                    GameManager gameManager = new GameManager( clientSocketA, clientNameA );
+                    gameManager.start(); // COMUNICAÇÃO FEITA AQUI troca de dados
                     System.out.println("S >>>>>>>>>>>>> foi p jogo de 1");
                 }
             }
@@ -66,6 +65,7 @@ public class Server {
 
         // fase de encerramento da conexão === o servidor fica conectado FOREVIZ
         try {
+            input.close();
             serverSocket.close();
             System.out.println("S > ========== Acabou a conexão do SERVIDOR ===============");
         } catch (Exception e) {

@@ -20,11 +20,10 @@ public class Listening extends Thread {
     public void run() {
         try {
             input = new Scanner(socket.getInputStream());
-            
             do {
                 msg = input.nextLine();
                 System.out.println(msg);
-            } while(!msg.equalsIgnoreCase("the game is over"));
+            } while(!msg.contains("GAME OVER"));
             
             input.close();
         } catch (Exception e) {
