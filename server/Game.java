@@ -48,43 +48,18 @@ public class Game {
         
         sendMatchMoves(move_player1, move_player2);
         
-        final int rock = 1;
-        final int paper = 2;
-        final int sissors = 3;
+        int outcome = move_player1 - move_player2;
 
-        switch (move_player1) {
-            case rock: 
-                if (move_player2 == paper) {
-                    whoWins(player2, player1);
-                } else if (move_player2 == sissors) {
-                    whoWins(player1, player2);
-                } else {
-                    makeEven();
-                }
-                break;
-            case paper: 
-                if (move_player2 == sissors) {
-                    whoWins(player2, player1);
-                } else if (move_player2 == rock) {
-                    whoWins(player1, player2);
-                } else {
-                    makeEven();
-                }
-                break;
-            case sissors: 
-                if (move_player2 == rock) {
-                    whoWins(player2, player1);
-                } else if (move_player2 == paper) {
-                    whoWins(player1, player2);
-                } else {
-                    makeEven();
-                }
-                break;
-            default:
-            makeEven(); // --- tratamento 
+        if (outcome == -2 || outcome == 1) {
+            whoWins(player1, player2);
+        } else if (outcome == -1 || outcome == 2) {
+            whoWins(player2, player1);
+        } else {
+            makeEven();
         }
         sendMessageToPlayers( "" + this );
     }
+    
     private void whoWins(Player winer, Player loser) {
         winer.setWins(1);
         loser.setLose(1);
