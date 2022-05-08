@@ -1,6 +1,8 @@
 package client;
 
+import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Player {
     private String name;
@@ -9,6 +11,8 @@ public class Player {
     private int wins;
     private int evens;
     private int lose;
+    private PrintStream GAME_to_player = null;
+    private Scanner GAME_from_player = null;
 
     public Player(String name, int gameType, Socket socket){
         this.name = name;
@@ -18,6 +22,22 @@ public class Player {
         this.evens = 0;
         this.lose = 0;
     }   
+
+    public PrintStream getGameToPlayer() {
+        return GAME_to_player;
+    }
+
+    public Scanner getGameFromPlayer() {
+        return GAME_from_player;
+    }
+
+    public void setGameToPlayer( PrintStream SERVER_to_client ) {
+        GAME_to_player = SERVER_to_client;
+    }
+
+    public void setGameFromPlayer( Scanner SERVER_from_client ) {
+        GAME_from_player = SERVER_from_client;
+    }
 
     public String getName() {
         return this.name;

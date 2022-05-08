@@ -60,6 +60,8 @@ public class Server {
                         System.out.println(
                             "S >>>>>>>>>>>>> foi p jogo de 2"
                         );
+                        clientSocketB = null;
+                        clientNameB = null;
                     }
                 } else {
                     GameManager gameManager = new GameManager( clientSocketA, clientNameA );

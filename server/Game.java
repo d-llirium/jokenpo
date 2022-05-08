@@ -30,13 +30,11 @@ public class Game {
             send_to_player2.println( msg );
         } 
     }
-    public void possibleMoves(){
-        sendMessageToPlayers(
-            "Digite o número de sua Escolha:"
+    public String possibleMoves(){
+        return "Digite o número de sua Escolha:"
             + "\n1 > pedra "
             + "\n2 > papel "
-            + "\n3 > tesoura "
-        );
+            + "\n3 > tesoura ";
     }
     public void play(int move_player1, int move_player2) {
         match += 1;
@@ -59,10 +57,12 @@ public class Game {
         }
         sendMessageToPlayers( "" + this );
     }
-    
+
     private void whoWins(Player winer, Player loser) {
         winer.setWins(1);
         loser.setLose(1);
+        sendMessageToPlayers("!!!!!!!!!!!!!!!! " + winer.getName() + " !!!!!!!!!!!!!!!!"
+                            + "\n       GANHOU A PARTIDA MAS NÃO GANHOU O JOGO");
     }
     private void makeEven() {
         player1.setEvens(1);
