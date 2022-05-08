@@ -1,6 +1,5 @@
 package server;
 
-// import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
@@ -9,31 +8,40 @@ public class Server {
     public static void main(String[] args) {
         final int PORT = 12345;
         ServerSocket serverSocket;
+        Scanner input = null; 
+
         Socket clientSocketA = null;
         Socket clientSocketB = null;
-        Scanner input = null; // para receber o nome do jogador e se ele quer jogar em com o computador
         
         String clientNameA = null;
         String clientNameB = null;
 
-        // criar o socket e fazer bind 
-        try { // tratar excessão
+        // CRIA SOCKET + BIND
+        try { 
             serverSocket = new ServerSocket(PORT); 
         } catch (Exception e) {
-            System.out.println("S > porta " + PORT + " já está em uso.");
-            return; // para o código
+            System.out.println(
+                "S > porta " + PORT + " já está em uso."
+            );
+            return; 
         }
 
-        // aguardar pedido de conexão (listen)
+        // ESPERA CNX
         try {
             while( true ) {
-                System.out.println("S > Aguardando pedido de conexão...");
+                System.out.println(
+                    "S > Aguardando pedido de conexão..."
+                );
                 clientSocketA = serverSocket.accept(); 
-                System.out.println("S > Conectado com " + clientSocketA.getInetAddress().getHostAddress());
+                System.out.println(
+                    "S > Conectado com " + clientSocketA.getInetAddress().getHostAddress()
+                );
                 
-                input = new Scanner(clientSocketA.getInputStream()); // ler a mensagem do cliente A
-                clientNameA = input.nextLine(); // recebe a mensagem do cliente
-                System.out.println("S > Jogador 1 = " + clientNameA);
+                input = new Scanner(clientSocketA.getInputStream());
+                clientNameA = input.nextLine(); 
+                System.out.println(
+                    "S > Jogador 1 = " + clientNameA
+                );
                 
                 // ** ESCOLHE SE JOGA SOZINHO OU SE JOGA CONTRA O COMPUTADOR **
                 int gameType = input.nextInt();
@@ -43,31 +51,41 @@ public class Server {
                         clientNameB = clientNameA;
                         
                         // ** AGUARDAR O SEGUNDO SOCKET AQUI *****
-                        System.out.println("S > Aguardando um próximo jogador ... ");
+                        System.out.println(
+                            "S > Aguardando um próximo jogador ... "
+                        );
                     } else {
                         GameManager gameManager = new GameManager( clientSocketA, clientNameA, clientSocketB, clientNameB );
-                        gameManager.start(); // COMUNICAÇÃO FEITA AQUI troca de dados
-                        System.out.println("S >>>>>>>>>>>>> foi p jogo de 2");
+                        gameManager.start(); // TROCA DE DADOS
+                        System.out.println(
+                            "S >>>>>>>>>>>>> foi p jogo de 2"
+                        );
 
-                        clientSocketB = null;
-                        clientNameB = null;
+                        // clientSocketB = null;
+                        // clientNameB = null;
                     }
                 } else {
                     GameManager gameManager = new GameManager( clientSocketA, clientNameA );
-                    gameManager.start(); // COMUNICAÇÃO FEITA AQUI troca de dados
-                    System.out.println("S >>>>>>>>>>>>> foi p jogo de 1");
+                    gameManager.start(); // TROCA DE DADOS
+                    System.out.println(
+                        "S >>>>>>>>>>>>> foi p jogo de 1"
+                    );
                 }
             }
         } catch (Exception e) {
-            System.out.println("S > xxxxxxx Erro na conexão... xxxxxxx");
+            System.out.println(
+                "S > xxxxxxx Erro na conexão... xxxxxxx"
+            );
             System.out.println(e.getMessage());
         }
 
-        // fase de encerramento da conexão === o servidor fica conectado FOREVIZ
+        // CLX CNX
         try {
             input.close();
             serverSocket.close();
-            System.out.println("S > ========== Acabou a conexão do SERVIDOR ===============");
+            System.out.println(
+                "S > ========== Acabou a conexão do SERVIDOR ==============="
+            );
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

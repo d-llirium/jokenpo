@@ -4,14 +4,13 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Listening extends Thread {
+    private String msg;
     private Socket socket;
     private Scanner input;
-    private String msg;
 
     public Listening (Socket socket) {
         this.socket = socket;
     }
-
     protected String getInput() {
         return this.msg;
     }
@@ -24,8 +23,8 @@ public class Listening extends Thread {
                 msg = input.nextLine();
                 System.out.println(msg);
             } while(!msg.contains("GAME OVER"));
-            
             input.close();
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

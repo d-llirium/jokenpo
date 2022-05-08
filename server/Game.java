@@ -8,63 +8,60 @@ public class Game {
     private int total;
     private int match;
 
-    private int evens;
-
     private Player player1;
     private Player player2;
 
-    private String playerA;
-    private String playerB;
+    private PrintStream send_to_player1; 
+    private PrintStream send_to_player2;
 
-    private PrintStream output1; // para enviar quem ganha o jogo ?????
-    private PrintStream output2; // para enviar quem ganha o jogo ?????
 
-    public Game(PrintStream outputA, Player player1, PrintStream outputB, Player player2) {
-        this.output1 = outputA;
-        this.output2 = outputB;
+    public Game(PrintStream send_to_player1, Player player1, PrintStream send_to_player2, Player player2) {
+        this.send_to_player1 = send_to_player1;
+        this.send_to_player2 = send_to_player2;
         this.player1 = player1;
         this.player2 = player2;
         match = 0;
-        evens = 0;
+        total = 5;
     }
     
-    public void play(int moveA, int moveB) {
+    public void play(int move_player1, int move_player2) {
         match += 1;
-        sendMessageToPlayers( "\n ----------------"
-                        + "\n==== INICIO DA JOGADA " + match 
-                        + "/ " + total
-                        + "\n ----------------"
+        sendMessageToPlayers( 
+            "\n --------------------------------"
+            + "\n INICIO DA PARTIDA " + match + "/ " + total
+            + "\n --------------------------------"
         );
-        sendMatchMoves(moveA, moveB);
+        // ---------- tratar entradas
+        sendMatchMoves(move_player1, move_player2);
         
         final int rock = 1;
         final int paper = 2;
         final int sissors = 3;
 
-        switch (moveA) {
-            case rock: // pedra
-                if (moveB == paper) {
-                    winPlayer2();
-                } else if (moveB == sissors) {
-                    winPlayer1();
+        switch (move_player1) {
+            case rock: 
+                if (move_player2 == paper) {
+                    whoWins(player2, player1);
+                } else if (move_player2 == sissors) {
+                    whoWins(player1, player2);
                 } else {
                     makeEven();
                 }
                 break;
-            case paper: // papel
-                if (moveB == sissors) {
-                    winPlayer2();
-                } else if (moveB == rock) {
-                    winPlayer1();
+            case paper: 
+                if (move_player2 == sissors) {
+                    whoWins(player2, player1);
+                } else if (move_player2 == rock) {
+                    whoWins(player1, player2);
                 } else {
                     makeEven();
                 }
                 break;
-            case sissors:  // tesoura
-                if (moveB == rock) {
-                    winPlayer2();
-                } else if (moveB == paper) {
-                    winPlayer1();
+            case sissors: 
+                if (move_player2 == rock) {
+                    whoWins(player2, player1);
+                } else if (move_player2 == paper) {
+                    whoWins(player1, player2);
                 } else {
                     makeEven();
                 }
@@ -74,59 +71,54 @@ public class Game {
         }
         sendMessageToPlayers( "" + this );
     }
-    private void winPlayer1() {
-        score1 +=1;
-        sendMessageToPlayers(playerA + "ganhou essa partida!");
-    }
-    private void winPlayer2() {
-        score2 +=1;
-        sendMessageToPlayers(playerB + "ganhou essa partida!");
+    private void whoWins(Player winer, Player loser) {
+        winer.setWins(1);
+        loser.setLose(1);
     }
     private void makeEven() {
-        evens += 1;
-        sendMessageToPlayers("EMPATE!!!");
+        player1.setEvens(1);
+        player2.setEvens(1);
+        sendMessageToPlayers(
+            "EMPATE!!!"
+        );
     }
     public void possibleMoves(){
         sendMessageToPlayers(
-        "Digite o número de sua Escolha:"
-        + "\n1 > pedra "
-        + "\n1 > papel "
-        + "\n1 > tesoura "
+            "Digite o número de sua Escolha:"
+            + "\n1 > pedra "
+            + "\n2 > papel "
+            + "\n3 > tesoura "
         );
     }
-    private int getScore1() {
-        return this.score1;
-    }
-    private int getScore2() {
-        return this.score2;
-    }
     private void sendMessageToPlayers( String msg ) {
-        output1.println( msg );
-        if (output2 != null) {
-            output2.println( msg );
+        send_to_player1.println( msg );
+        if (send_to_player2 != null) {
+            send_to_player2.println( msg );
         } 
     }
     public Boolean isGameOver() {
-        if (match < 5) { 
+        if (match < total) { 
             return false;
         } else {
             String winer;
-            if (score1 < score2) {
-                winer = playerA;
-            } else if (score1 > score2){
-                winer = playerB;
+            if (player1.getWins() < player2.getWins()) {
+                winer = player2.getName();
+            } else if (player1.getWins() > player2.getWins()){
+                winer = player1.getName();
             } else {
-                winer = "ninguém";
+                winer = "NINGUÉM";
             }
-            sendMessageToPlayers( ">>>>>>>>>>>>>>" + winer + " GANHOU!!!" + ">>>>>>>>>>>>>>"
-                + "\n:::::::::: GAME OVER ::::::::::");
+            sendMessageToPlayers( 
+                ">>>>>>>>>>>>>>" + winer + " GANHOU!!!" + ">>>>>>>>>>>>>>"
+                + "\n:::::::::: GAME OVER ::::::::::"
+            );
             return true;
         }
     }
-    private void sendMatchMoves(int moveA, int moveB) {
+    private void sendMatchMoves(int move_player1, int move_player2) {
         sendMessageToPlayers(
-            playerA + " jogada > " + turnMoveToString(moveA)
-            + "\n" + playerB + " jogada > " + turnMoveToString(moveB)
+            player1.getName() + " jogada > " + turnMoveToString(move_player1)
+            + "\n" + player2.getName() + " jogada > " + turnMoveToString(move_player2)
         );
     }
     private String turnMoveToString( int move_int ) {
@@ -143,10 +135,10 @@ public class Game {
         }
     }
     public String toString() {
-        return "------ jogada " + match + "/" + total + " -------"
-        + "\n" + playerA + " ganhou " + getScore1()
-        + "\n" + playerB + " ganhou " + getScore2()
-        + "\n" + "totalizando" + evens + "empates"
+        return "------ jogada " + match +
+         "/" + total + " -------"
+        + "\n" + player1
+        + "\n" + player2
         + "\n------------------------------------";
-    }
+    } 
 }
