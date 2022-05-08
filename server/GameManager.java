@@ -35,9 +35,6 @@ public class GameManager extends Thread {
             receive_from_player1 = new Scanner(player1.getPlug().getInputStream()); 
             send_to_player1 = new PrintStream(player1.getPlug().getOutputStream());
 
-            System.out.println(
-                "MG > " + player1.getName() + " vs " + player2.getName() + " ...   FIGHT! "
-            );
             if (player2.getPlug() != null) {
                 receive_from_player2 = new Scanner(player2.getPlug().getInputStream());
                 send_to_player2 = new PrintStream(player2.getPlug().getOutputStream());
@@ -45,11 +42,15 @@ public class GameManager extends Thread {
                 receive_from_player2 = null;
                 send_to_player2 = null;
             }
+            System.out.println(
+                "MG > " + player1.getName() + " vs " + player2.getName() + " ...   FIGHT! "
+            );
             Game game = new Game(send_to_player1, player1, send_to_player2, player2);
 
             do {
                 game.possibleMoves();
 
+                // ---------- tratar entradas
                 int move_player1 = player1.makeMove(receive_from_player1.nextInt());
                 int move_player2;
 
@@ -57,7 +58,7 @@ public class GameManager extends Thread {
                     move_player2 = player2.makeMove(receive_from_player2.nextInt());
                 } else {
                     Random move_server = new Random();
-                    move_player2 = player2.makeMove(move_server.nextInt(4));
+                    move_player2 = player2.makeMove(move_server.nextInt(3)+1); 
                     System.out.println(
                         ">>>>> MG > SERVER MOVE " + move_player2
                     );

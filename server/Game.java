@@ -23,7 +23,21 @@ public class Game {
         match = 0;
         total = 5;
     }
-    
+
+    private void sendMessageToPlayers( String msg ) {
+        send_to_player1.println( msg );
+        if (send_to_player2 != null) {
+            send_to_player2.println( msg );
+        } 
+    }
+    public void possibleMoves(){
+        sendMessageToPlayers(
+            "Digite o número de sua Escolha:"
+            + "\n1 > pedra "
+            + "\n2 > papel "
+            + "\n3 > tesoura "
+        );
+    }
     public void play(int move_player1, int move_player2) {
         match += 1;
         sendMessageToPlayers( 
@@ -31,7 +45,7 @@ public class Game {
             + "\n INICIO DA PARTIDA " + match + "/ " + total
             + "\n --------------------------------"
         );
-        // ---------- tratar entradas
+        
         sendMatchMoves(move_player1, move_player2);
         
         final int rock = 1;
@@ -67,7 +81,7 @@ public class Game {
                 }
                 break;
             default:
-            makeEven();
+            makeEven(); // --- tratamento 
         }
         sendMessageToPlayers( "" + this );
     }
@@ -81,20 +95,6 @@ public class Game {
         sendMessageToPlayers(
             "EMPATE!!!"
         );
-    }
-    public void possibleMoves(){
-        sendMessageToPlayers(
-            "Digite o número de sua Escolha:"
-            + "\n1 > pedra "
-            + "\n2 > papel "
-            + "\n3 > tesoura "
-        );
-    }
-    private void sendMessageToPlayers( String msg ) {
-        send_to_player1.println( msg );
-        if (send_to_player2 != null) {
-            send_to_player2.println( msg );
-        } 
     }
     public Boolean isGameOver() {
         if (match < total) { 
@@ -135,8 +135,7 @@ public class Game {
         }
     }
     public String toString() {
-        return "------ jogada " + match +
-         "/" + total + " -------"
+        return "------ jogada " + match + " / " + total + " -------"
         + "\n" + player1
         + "\n" + player2
         + "\n------------------------------------";
