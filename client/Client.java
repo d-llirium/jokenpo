@@ -54,7 +54,7 @@ public class Client {
             do {
                 msg = keyboard.nextLine(); 
                 output.println(msg); 
-            } while (!listening.getInput().contains("GAME OVER")); 
+            } while (!listening.getInput().equalsIgnoreCase("GAME OVER")); 
             
         } catch (Exception e) {
             System.out.println("cliente enceraaaaaaaaaa");
