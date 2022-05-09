@@ -44,32 +44,31 @@ public class Server {
                 );
                 
                 // ** ESCOLHE SE JOGA SOZINHO OU SE JOGA CONTRA O COMPUTADOR **
-                int gameType = input.nextInt();
-                if (gameType == 1) {
-                    if (clientSocketB == null) {
-                        clientSocketB = clientSocketA;
-                        clientNameB = clientNameA;
-                        
-                        // ** AGUARDAR O SEGUNDO SOCKET AQUI *****
-                        System.out.println(
-                            "S > Aguardando um próximo jogador ... "
-                        );
+                do {
+                    Validate.setReceivedString( input );
+                    Validate.strToInt(0, 3);
+                    if ( Validate.num == 2) {
+                        if (clientSocketB == null) {
+                            clientSocketB = clientSocketA;
+                            clientNameB = clientNameA;
+                            // ** AGUARDAR O SEGUNDO SOCKET AQUI *****
+                        } else {
+                            GameManager gameManager = new GameManager( clientSocketA, clientNameA, clientSocketB, clientNameB );
+                            gameManager.start(); // TROCA DE DADOS
+                            System.out.println(
+                                "S >>>>>>>>>>>>> foi p jogo de 2"
+                            );
+                            clientSocketB = null;
+                            clientNameB = null;
+                        }
                     } else {
-                        GameManager gameManager = new GameManager( clientSocketA, clientNameA, clientSocketB, clientNameB );
+                        GameManager gameManager = new GameManager( clientSocketA, clientNameA );
                         gameManager.start(); // TROCA DE DADOS
                         System.out.println(
-                            "S >>>>>>>>>>>>> foi p jogo de 2"
+                            "S >>>>>>>>>>>>> foi p jogo de 1"
                         );
-                        clientSocketB = null;
-                        clientNameB = null;
                     }
-                } else {
-                    GameManager gameManager = new GameManager( clientSocketA, clientNameA );
-                    gameManager.start(); // TROCA DE DADOS
-                    System.out.println(
-                        "S >>>>>>>>>>>>> foi p jogo de 1"
-                    );
-                }
+                } while (!Validate.strToInt(0, 3));
             }
         } catch (Exception e) {
             System.out.println(

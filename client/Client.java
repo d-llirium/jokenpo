@@ -4,15 +4,16 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+import server.Validate;
+
 public class Client {
     public static void main(String[] args) {
         final String IP = "127.0.0.1"; 
         final int PORT = 12345; 
-        Socket socket;
-        PrintStream output = null;
+        Socket socket; 
+        PrintStream output = null; 
         Scanner keyboard = null; 
-        String clientName;
-        int gameType;
+        String clientName; 
 
         // PEDE CNX
         try {
@@ -21,20 +22,27 @@ public class Client {
             try {
                 output = new PrintStream(socket.getOutputStream()); 
                 keyboard = new Scanner(System.in);
-
+                
                 System.out.println(
-                    "C > Digite o seu nome: "
+                "C > Digite o seu nome: "
                 );
                 clientName = keyboard.nextLine(); 
                 output.println(clientName); 
-                    
-                System.out.println(
-                    "C > Digite \n0 para jogar contra a máquina"  
-                    + "\n1 para jogar com outro jogador: "
+                do {    
+                    System.out.println(
+                        "C > Digite \n1 para jogar contra a máquina"  
+                        + "\n2 para jogar com outro jogador: "
                     );
-                gameType = keyboard.nextInt(); // ----------- tratar entrada
-                output.println(gameType); 
-
+                    Validate.setReceivedString( keyboard );
+                    Validate.strToInt(0, 2);
+                    
+                } while(!Validate.strToInt(0, 2));
+                output.println(Validate.num); 
+                if ( Validate.num == 2) {
+                    System.out.println(
+                        "S > Aguardando um próximo jogador ... "
+                    );
+                }
             } catch (Exception e) {
                 System.out.println("C > xxxxxxx MSG DE ERRO = " + e.getMessage() + " xxxxxxx");
             }
@@ -46,7 +54,6 @@ public class Client {
 
         // TROCA DE DADOS
         try {
-            keyboard = new Scanner(System.in); 
             Listening listening = new Listening(socket);
             listening.start();
 
@@ -55,9 +62,10 @@ public class Client {
                 msg = keyboard.nextLine(); 
                 output.println(msg); 
             } while (!listening.getInput().equalsIgnoreCase("GAME OVER")); 
-            
-        } catch (Exception e) {
+
+            output.println("STOP");
             System.out.println("cliente enceraaaaaaaaaa");
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 

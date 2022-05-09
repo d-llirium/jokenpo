@@ -22,9 +22,8 @@ public class Listening extends Thread {
             do {
                 msg = input.nextLine();
                 System.out.println(msg);
-            } while(!msg.contains("GAME OVER"));
+            } while(!msg.equalsIgnoreCase("GAME OVER"));
             input.close();
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

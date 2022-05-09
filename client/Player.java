@@ -48,9 +48,6 @@ public class Player {
     public Socket getPlug() {
         return plug;
     }
-    public int makeMove( int move ){
-        return move;
-    }
     public void setWins(int times) {
         wins += times;
     }
