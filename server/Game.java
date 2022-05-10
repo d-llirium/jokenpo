@@ -19,7 +19,7 @@ public class Game {
 
     private void sendMessageToPlayers( String msg ) {
         player1.getGameToPlayer().println( msg );
-        if (player2.getGameToPlayer() != null) {
+        if (player2.getGameType() == 2) {
             player2.getGameToPlayer().println( msg );
         } 
     }
@@ -67,9 +67,7 @@ public class Game {
         );
     }
     public void isGameOver() {
-        if (match < total) { 
-            return;
-        } else {
+        if (match == total) { 
             String winer;
             if (player1.getWins() < player2.getWins()) {
                 winer = player2.getName();
@@ -82,6 +80,8 @@ public class Game {
                 ">>>>>>>>>>>>>>" + winer + " GANHOU!!!" + ">>>>>>>>>>>>>>"
                 + "\n:::::::::: GAME OVER ::::::::::"
             );
+        } else {
+            System.out.println("ainda tá rolando o jogo");
         }
     }
     private String turnMoveToString( int move_int ) {

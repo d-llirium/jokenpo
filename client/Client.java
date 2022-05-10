@@ -14,6 +14,7 @@ public class Client {
         PrintStream output = null; 
         Scanner keyboard = null; 
         String clientName; 
+        Validate val = new Validate();
 
         // PEDE CNX
         try {
@@ -33,12 +34,11 @@ public class Client {
                         "C > Digite \n1 para jogar contra a máquina"  
                         + "\n2 para jogar com outro jogador: "
                     );
-                    Validate.setReceivedString( keyboard );
-                    Validate.strToInt(0, 2);
+                    val.setReceivedString( keyboard );
                     
-                } while(!Validate.strToInt(0, 2));
-                output.println(Validate.num); 
-                if ( Validate.num == 2) {
+                } while(!val.strToInt(0, 3));
+                output.println(val.num); 
+                if ( val.num == 2) {
                     System.out.println(
                         "S > Aguardando um próximo jogador ... "
                     );
@@ -47,7 +47,6 @@ public class Client {
                 System.out.println("C > xxxxxxx MSG DE ERRO = " + e.getMessage() + " xxxxxxx");
             }
         } catch (Exception e) {
-            System.out.println("C > Não foi possível conectar ao servidor");
             System.out.println("C > xxxxxxx MSG DE ERRO = " + e.getMessage() + " xxxxxxx");
             return;
         }
@@ -61,7 +60,7 @@ public class Client {
             do {
                 msg = keyboard.nextLine(); 
                 output.println(msg); 
-            } while (!listening.getInput().equalsIgnoreCase("GAME OVER")); 
+            } while (!listening.getInput().contains("GAME OVER")); 
 
             output.println("STOP");
             System.out.println("cliente enceraaaaaaaaaa");

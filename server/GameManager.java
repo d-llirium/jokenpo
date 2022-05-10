@@ -8,9 +8,17 @@ import java.util.Scanner;
 import client.Player;
 
 public class GameManager extends Thread {
-    private Player player1;
-    private Player player2;
+
     private Game game; 
+    private Validate val = new Validate();
+
+    private Player player1;
+    Scanner receive_from_player1 = null;
+    PrintStream send_to_player1 = null;
+
+    private Player player2;
+    Scanner receive_from_player2 = null;
+    PrintStream send_to_player2 = null;  
 
     // SOBRECARGA DE MÉTODO PARA RECEBER TIPO DE JOGO
     // jogador vs CPU
@@ -28,14 +36,11 @@ public class GameManager extends Thread {
     public void run() { // .START
         // TROCA DE DADOS
         try {
-            Scanner receive_from_player1 = new Scanner(player1.getPlug().getInputStream());
+            receive_from_player1 = new Scanner(player1.getPlug().getInputStream());
             player1.setGameFromPlayer(receive_from_player1);
             
-            PrintStream send_to_player1 = new PrintStream(player1.getPlug().getOutputStream());
-            player1.setGameToPlayer(send_to_player1);
-
-            Scanner receive_from_player2 = null;
-            PrintStream send_to_player2 = null;        
+            send_to_player1 = new PrintStream(player1.getPlug().getOutputStream());
+            player1.setGameToPlayer(send_to_player1);      
 
             if (player1.getGameType() == 2) { 
                 receive_from_player2 = new Scanner(player2.getPlug().getInputStream());
@@ -50,12 +55,11 @@ public class GameManager extends Thread {
             game = new Game(player1, player2);
 
             do {
-                
-                int move_player1 = Validate.match(player1);
+                int move_player1 = val.match(player1);
                 int move_player2;
 
-                if (receive_from_player2 != null) { 
-                    move_player2 = Validate.match(player2);
+                if (player1.getGameType() == 2) { 
+                    move_player2 = val.match(player2);
                 } else {
                     Random move_server = new Random();
                     move_player2 = move_server.nextInt(3)+1; 
@@ -66,16 +70,18 @@ public class GameManager extends Thread {
                 game.play(move_player1, move_player2);
                 game.isGameOver();
         
-            } while(!receive_from_player1.nextLine().equalsIgnoreCase("STOP")); 
+            } while(!receive_from_player1.nextLine().contains("STOP")); 
 
             receive_from_player1.close();
             send_to_player1.close();
             player1.getPlug().close();
+
             if (receive_from_player2 != null) {
                 receive_from_player2.close();
                 send_to_player2.close();
                 player2.getPlug().close();
             }
+            
             System.out.println(
                 "MG > Encerrada a conexão com " + player1.getPlug().getInetAddress().getHostAddress()
             );

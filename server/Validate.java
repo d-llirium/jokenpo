@@ -5,18 +5,19 @@ import java.util.Scanner;
 import client.Player;
 
 public class Validate {
-    public static String number;
-    public static int num;
-    public static String possibleMoves(){
+    public String number = "";
+    public int num = 0;
+    
+    public String possibleMoves(){
         return "Digite o número de sua Escolha:"
             + "\n1 > pedra "
             + "\n2 > papel "
             + "\n3 > tesoura ";
     }
-    public static Boolean strToInt(int from, int to) {
+    public Boolean strToInt(int from, int to) {
         try {
             num = Integer.parseInt(number);
-            System.out.println(num); 
+            System.out.println("=" + num); 
             if ( num > from && num < to ) {
                 return true;
             } else {
@@ -30,7 +31,7 @@ public class Validate {
         }
         return null;
     }
-    public static int match( Player player ) {
+    public int match( Player player ) {
         int i = 0;
         do {
             System.out.println("ON VALIDA por " + i );
@@ -49,7 +50,7 @@ public class Validate {
         } while ( i < 5 );
         return 0;
     }
-    public static void setReceivedString( Scanner str) {
+    public void setReceivedString( Scanner str) {
         number = str.nextLine();
     }
 }
