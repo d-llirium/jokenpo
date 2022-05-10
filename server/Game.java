@@ -18,11 +18,13 @@ public class Game {
     }
 
     private void sendMessageToPlayers( String msg ) {
-        player1.getGameToPlayer().println( msg );
+        player1.getSpeakingToPlayer().sendMessage( msg );
+
         if (player2.getGameType() == 2) {
-            player2.getGameToPlayer().println( msg );
+            player2.getSpeakingToPlayer().sendMessage( msg );
         } 
     }
+
     private void sendMatchMoves(int move_player1, int move_player2) {
         sendMessageToPlayers(
             player1.getName() + " jogada > " + turnMoveToString(move_player1)
@@ -54,10 +56,8 @@ public class Game {
     private void whoWins(Player winer, Player loser) {
         winer.setWins(1);
         loser.setLose(1);
-        winer.getGameToPlayer().println(
-            "!!!!!!!!!!!!!!!! " + winer.getName() + " !!!!!!!!!!!!!!!!"
-            + "\n       GANHOU A PARTIDA MAS NÃO GANHOU O JOGO"
-        );
+        winer.getSpeakingToPlayer().sendMessage( "!!!!!!!!!!!!!!!! " + winer.getName() + " !!!!!!!!!!!!!!!!"
+                                                + "\n       GANHOU A PARTIDA MAS NÃO GANHOU O JOGO" );
     }
     private void makeEven() {
         player1.setEvens(1);
@@ -66,22 +66,27 @@ public class Game {
             "EMPATE!!!"
         );
     }
-    public void isGameOver() {
-        if (match == total) { 
+    public Boolean isGameOver() {
+        if (match == total) {
             String winer;
             if (player1.getWins() < player2.getWins()) {
                 winer = player2.getName();
+
             } else if (player1.getWins() > player2.getWins()){
                 winer = player1.getName();
+
             } else {
                 winer = "NINGUÉM";
             }
-            sendMessageToPlayers( 
-                ">>>>>>>>>>>>>>" + winer + " GANHOU!!!" + ">>>>>>>>>>>>>>"
-                + "\n:::::::::: GAME OVER ::::::::::"
-            );
+            sendMessageToPlayers( ">>>>>>>>>>>>>>" + winer + " GANHOU!!!" + ">>>>>>>>>>>>>>"
+                                + "\n:::::::::: GAME OVER ::::::::::");
+            for (int i = 0; i < 10; i++) {
+                System.out.println("is it over yet?");
+            }
+            return true;
         } else {
             System.out.println("ainda tá rolando o jogo");
+            return false;
         }
     }
     private String turnMoveToString( int move_int ) {
@@ -97,6 +102,12 @@ public class Game {
                 return "INVÁLIDA";
         }
     }
+    public void endGame() {
+        match = total;
+        isGameOver();
+    }
+    
+    @Override
     public String toString() {
         return "------ jogada " + match + " / " + total + " -------"
         + "\n" + player1
