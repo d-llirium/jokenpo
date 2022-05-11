@@ -9,15 +9,15 @@ public class Speaking {
 
     public Speaking (Socket socket) {
         try {
-            output = new PrintStream(socket.getOutputStream());
+            this.output = new PrintStream(socket.getOutputStream());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
     protected void sendMessage( String msg) {
-        output.println(msg);
+        this.output.println(msg);
     }  
     protected void stopSpeaking(){
-        output.close();
+        this.output.close();
     }
 }

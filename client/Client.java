@@ -4,11 +4,14 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+import server.Validate;
+
 public class Client {
     public static void main(String[] args) {
         final String IP = "127.0.0.1"; 
         final int PORT = 12345; 
         Socket socket; 
+        
         PrintStream output = null; 
         Scanner keyboard = null; 
         String clientName; 
@@ -25,11 +28,15 @@ public class Client {
                 clientName = keyboard.nextLine(); 
                 output.println(clientName); 
 
+                Validate val = new Validate();
+
                 int gameType;
+                String msg;
                 do {    
                     System.out.println("C > Digite \n1 para jogar contra a máquina"  
-                        + "\n2 para jogar com outro jogador: " );
-                    gameType = keyboard.nextInt();
+                                        + "\n2 para jogar com outro jogador: " );
+                    msg = keyboard.nextLine();
+                    gameType = val.stringToInt(msg);
                 } while(!(gameType == 1 || gameType == 2));
 
                 output.println(gameType); 
@@ -64,7 +71,6 @@ public class Client {
 
         // ENCERRA CNX
         try { 
-            output.println(111111);
             keyboard.close();
             output.close();
             socket.close();

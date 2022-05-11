@@ -16,6 +16,7 @@ public class Server {
         String clientNameA = null;
         String clientNameB = null;
 
+        Validate val = new Validate();
         GameManager gameManager = null;
 
         // CRIA SOCKET + BIND
@@ -38,11 +39,15 @@ public class Server {
                 clientNameA = input.nextLine(); 
                 System.out.println("S > Jogador 1 = " + clientNameA);
 
+                Boolean isGameTypeValid = false; // verifica se é válido
                 int gameType;
                 // ** ESCOLHE SE JOGA SOZINHO OU SE JOGA CONTRA O COMPUTADOR **
                 do {
-                    gameType = input.nextInt();
+                    String msg = input.nextLine();
+                    gameType = val.stringToInt(msg);
                     if ( gameType == 2) {
+                        isGameTypeValid = true;
+
                         if (clientSocketB == null) {
                             clientSocketB = clientSocketA;
                             clientNameB = clientNameA;
@@ -56,13 +61,15 @@ public class Server {
                             clientSocketB = null;
                             clientNameB = null;
                         }
-                    } else {
+                    } else if (gameType == 1){
+                        isGameTypeValid = true;
+
                         // ** CREATE A GAME MANAGER **
                         gameManager = new GameManager( clientSocketA, clientNameA );
                         gameManager.start(); // TROCA DE DADOS
                         System.out.println("S >>>>>>>>>>>>> foi p jogo de 1");
                     }
-                } while (!(gameType == 1 || gameType == 2));
+                } while (!isGameTypeValid);
             }
         } catch (Exception e) {
             System.out.println("S > xxxxxxx Erro" + e.getMessage() + "na conexão... xxxxxxx");

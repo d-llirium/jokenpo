@@ -4,28 +4,30 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Listening {
-    private int msg;
+    private String msg;
     private Scanner input; 
+    private Validate val = new Validate();
 
     public Listening (Socket socket) {
         try {
-            input = new Scanner(socket.getInputStream());
+            this.input = new Scanner(socket.getInputStream());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-
     protected int receiveMessage() {
-        msg = 0;
-        do {
-            msg = input.nextInt();
+        int num;
+
+        this.msg = "";
+            this.msg = input.nextLine();
             System.out.println(msg);
-        } while(msg != 0);
-        return msg;
+            num = val.stringToInt(msg);
+            
+        return num;
     }
     
     protected void stopListening() {
-        input.close();
+        this.input.close();
     }
             
 
